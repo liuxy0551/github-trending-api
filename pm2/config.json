@@ -1,0 +1,12 @@
+{
+  "name": "github-trending-api",
+  "script": "./app.js",
+  "cwd"   : "./",
+  "log_date_format": "YYYY-MM-DD HH:mm:ss",
+  "max_memory_restart": "500M",
+  "out_file"   : "./pm2/logs/pm2-out.log",
+  "error_file" : "./pm2/logs/pm2-err.log",
+  "env_production": {
+    "NODE_ENV": "production"
+  }
+}

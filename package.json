@@ -1,0 +1,33 @@
+{
+  "name": "github-trending-api",
+  "version": "1.0.0",
+  "description": "提供 Github Trending 数据的 API 接口",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liuxy0551/github-trending-api"
+  },
+  "keywords": [
+    "node",
+    "koa",
+    "Serverless"
+  ],
+  "author": "liuxy0551@qq.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "cheerio": "^1.0.0-rc.10",
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-compress": "^5.0.1",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}

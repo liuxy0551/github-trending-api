@@ -21,8 +21,7 @@ const getGithubLanguageList = async () => {
         })
         return result
     } catch (err) {
-        console.log('github trending language list error', err)
-        throw err
+        throw JSON.stringify(err)
     }
 }
 
@@ -72,8 +71,7 @@ const getGithubTrending = async (language, dateRange, current, pageSize) => {
             pageSize
         }
     } catch (err) {
-        console.log('github trending error', err)
-        throw err
+        throw JSON.stringify(err)
     }
 }
 

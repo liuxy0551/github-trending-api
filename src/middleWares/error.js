@@ -12,7 +12,6 @@ module.exports = async (ctx, next) => {
     await next()
   } catch (error) {
     ctx.status = error.status || 500
-    console.log(ctx.status, error)
     ctx.body = setCtxBody(500, error, '系统错误')
     ctx.app.emit('error', error, ctx)
   }

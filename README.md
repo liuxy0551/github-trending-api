@@ -4,7 +4,7 @@
   <a href="https://github.com/liuxy0551/github-trending-api#github-trending-api" target="blank"><img src="./static/logo.jpg" width="500" alt="Github Trending" /></a>
 </p>
 
-提供 GitHub Trending 的 api 接口，响应数据示例如下：
+提供 GitHub Trending 的 api 接口，<a href="https://www.apifox.cn/apidoc/shared-3245f62c-0da3-46a0-a877-a2477e9ef88b/api-10436551" target="_black">接口文档</a>，响应数据示例如下：
 
 ``` json
 {
@@ -40,4 +40,4 @@ yarn
 yarn dev
 ```
 
-在浏览器中打开 http://127.0.0.1:9003/repository/list
+在浏览器中打开 <a href="http://127.0.0.1:9003/repository/list" target="_black">http://127.0.0.1:9003/repository/list</a>

@@ -8,23 +8,28 @@
 
 ``` json
 {
-    "code": 200,
-    "data": [
-        {
-            "username": "imcuttle",
-            "repositoryName": "mometa",
-            "description": "🛠 [Beta] 面向研发的低代码元编程，代码可视编辑，辅助编码工具",
-            "url": "https://github.com/imcuttle/mometa",
-            "language": "TypeScript",
-            "starCountStr": "1,020",
-            "starCount": 1020,
-            "forkCountStr": "136",
-            "forkCount": 136,
-            "todayStarStr": "300",
-            "todayStar": 300
-        }
+  "code": 200,
+  "data": {
+    "list": [
+      {
+        "username": "imcuttle",
+        "repositoryName": "mometa",
+        "description": "🛠 [Beta] 面向研发的低代码元编程，代码可视编辑，辅助编码工具",
+        "url": "https://github.com/imcuttle/mometa",
+        "language": "TypeScript",
+        "starCountStr": "1,154",
+        "starCount": 1154,
+        "forkCountStr": "159",
+        "forkCount": 159,
+        "todayStarStr": "161",
+        "todayStar": 161
+      }
     ],
-    "message": "成功"
+    "total": 25,
+    "current": 1,
+    "pageSize": 5
+  },
+  "message": "成功"
 }
 ```
 

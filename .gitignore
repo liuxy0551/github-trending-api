@@ -6,3 +6,5 @@ dist/
 .idea/
 run/
 .DS_Store
+
+pm2/logs/*.log

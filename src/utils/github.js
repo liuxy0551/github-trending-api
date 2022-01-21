@@ -29,7 +29,7 @@ const getGithubLanguageList = async () => {
 /**
  * github trending from github
  */
-const getGithubTrending = async (language, dateRange, pageSize) => {
+const getGithubTrending = async (language, dateRange, current, pageSize) => {
     try {
         const { data } = await axios.get(`https://github.com/trending${ language }?since=${ dateRange }`, { timeout })
 
@@ -65,7 +65,12 @@ const getGithubTrending = async (language, dateRange, pageSize) => {
                 todayStar: Number(todayStar.split('starstoday')[0].replace(/,/g, '')),
             })
         })
-        return result
+        return {
+            list: result.slice((current - 1) * pageSize, current * pageSize),
+            total: result.length,
+            current,
+            pageSize
+        }
     } catch (err) {
         console.log('github trending error', err)
         throw err

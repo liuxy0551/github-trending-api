@@ -1,4 +1,4 @@
-const { getGithubLanguageList, getGithubTrending } = require('./github')
+const { getGithubLanguageList, getGithubTrendingWithRetry } = require('./github')
 
 /**
  * setCtxBody 设置 ctx.body
@@ -11,5 +11,5 @@ const setCtxBody = (code = 200, data, message = '成功', extraParams) => {
 module.exports = {
 	setCtxBody,
 	getGithubLanguageList,
-	getGithubTrending,
+	getGithubTrendingWithRetry,
 }

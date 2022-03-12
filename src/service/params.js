@@ -1,4 +1,4 @@
-const { setCtxBody, getGithubLanguageList, getGithubTrending } = require("../utils");
+const { setCtxBody, getGithubLanguageList } = require("../utils");
 
 class ParamsService {
     // 口语语言列表

@@ -1,6 +1,6 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
-const timeout = 30_000
+const timeout = 60_000
 
 /**
  * github trending language list
@@ -23,6 +23,30 @@ const getGithubLanguageList = async () => {
     } catch (err) {
         throw JSON.stringify(err)
     }
+}
+
+const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize) => {
+    // 最多重试2次
+    let retryCount = 0, maxCount = 5
+
+    const loop = async (language, dateRange, current, pageSize) => {
+        try {
+            console.log(retryCount)
+            const result = await getGithubTrending(language, dateRange, current, pageSize)
+            return result
+        } catch (error) {
+            if (!error.includes('timeout')) throw error
+            if (retryCount < maxCount) {
+                retryCount++
+                await loop(language, dateRange, current, pageSize)
+            } else {
+                throw error
+            }
+        }
+    }
+    
+    const result = await loop(language, dateRange, current, pageSize)
+    return result
 }
 
 /**
@@ -70,12 +94,12 @@ const getGithubTrending = async (language, dateRange, current, pageSize) => {
             current,
             pageSize
         }
-    } catch (err) {
-        throw JSON.stringify(err)
+    } catch (error) {
+        throw JSON.stringify(error)
     }
 }
 
 module.exports = {
     getGithubLanguageList,
-    getGithubTrending,
+    getGithubTrendingWithRetry,
 }

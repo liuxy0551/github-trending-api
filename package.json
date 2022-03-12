@@ -26,7 +26,8 @@
     "koa-compress": "^5.0.1",
     "koa-logger": "^3.2.1",
     "koa-router": "^10.0.0",
-    "node-schedule": "^2.1.0"
+    "node-schedule": "^2.1.0",
+    "redis": "^4.0.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

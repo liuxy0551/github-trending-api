@@ -22,7 +22,8 @@
         "forkCountStr": "159",
         "forkCount": 159,
         "todayStarStr": "161",
-        "todayStar": 161
+        "todayStar": 161,
+        "time": "2022-03-12 23:38:23"
       }
     ],
     "total": 25,
@@ -33,6 +34,7 @@
 }
 ```
 
+
 ## 使用方法
 
 ```
@@ -41,3 +43,8 @@ yarn dev
 ```
 
 在浏览器中打开 <a href="http://127.0.0.1:9003/repository/list" target="_black">http://127.0.0.1:9003/repository/list</a>
+
+
+## 缓存规则
+
+&emsp;&emsp;6点到23点每小时执行一次，如果执行失败，会重试，最多重试5次，每次成功都会把结果放到 Redis。

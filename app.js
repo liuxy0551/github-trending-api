@@ -6,11 +6,15 @@ const { appPort } = require('./src/config/app.config')
 const middles = require('./src/middleWares')
 const router = require('./src/router')
 const { scheduleInit } = require('./src/schedule')
+const { redisInit } = require('./src/utils/redis')
 
 const app = new Koa()
 
 // 定时任务
-// scheduleInit()
+scheduleInit()
+
+// 连接 redis
+redisInit()
 
 app.use(logger())
 app.use(compress({

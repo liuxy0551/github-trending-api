@@ -1,5 +1,6 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
+const { redis } = require('./redis')
 const timeout = 60_000
 
 /**
@@ -31,13 +32,25 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
 
     const loop = async (language, dateRange, current, pageSize) => {
         try {
-            console.log(retryCount)
-            const result = await getGithubTrending(language, dateRange, current, pageSize)
-            return result
+            let list = []
+            // 从 Redis 中拿数据，没有就请求接口并重新赋值到 Redis
+            const value = await redis.get(`${ language }-list`)
+            if (value) {
+                list = JSON.parse(value)
+            } else {
+                list = await getGithubTrending(language, dateRange)
+            }
+            return {
+                list: list.slice((current - 1) * pageSize, current * pageSize),
+                total: list.length,
+                current,
+                pageSize
+            }
         } catch (error) {
-            if (!error.includes('timeout')) throw error
+            if (!JSON.stringify(error).includes('timeout')) throw error
             if (retryCount < maxCount) {
                 retryCount++
+                console.log(`Github Trending timeout 失败，重试第 ${ retryCount } 次, ${ getNow() }`)
                 await loop(language, dateRange, current, pageSize)
             } else {
                 throw error
@@ -52,28 +65,29 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
 /**
  * github trending from github
  */
-const getGithubTrending = async (language, dateRange, current, pageSize) => {
+const getGithubTrending = async (language, dateRange) => {
     try {
         const { data } = await axios.get(`https://github.com/trending${ language }?since=${ dateRange }`, { timeout })
-
+    
         let result = []
         const $ = cheerio.load(data)
         const items = $('article')
-
+    
         items.each((index, item) => {
             const [username, repositoryName] = items.eq(index).find('h1.lh-condensed').text().replace(/\s*/g, '').split('/')
             const description = items.eq(index).find('p.pr-4').text().replace(/(^\s*)|(\s*$)/g, '')
             const url = `https://github.com/${ username }/${ repositoryName }`
-
+    
             const [language, todayStar] = items.eq(index).find('div.f6').find('span.d-inline-block').text().replace(/\s*/g, '').split('Builtby')
-
+    
             const list = items.eq(index).find('div.f6').find('a')
             let starCountStr = '', forkCountStr = ''
             list.each((idx, aEle) => {
                 idx === 0 && (starCountStr = $(aEle).text().replace(/\s*/g, ''))
                 idx === 1 && (forkCountStr = $(aEle).text().replace(/\s*/g, ''))
             })
-
+            const time = getNow()
+    
             result.push({
                 username,
                 repositoryName,
@@ -86,20 +100,41 @@ const getGithubTrending = async (language, dateRange, current, pageSize) => {
                 forkCount: Number(forkCountStr.replace(/,/g, '')),
                 todayStarStr: todayStar.split('starstoday')[0],
                 todayStar: Number(todayStar.split('starstoday')[0].replace(/,/g, '')),
+                time
             })
         })
-        return {
-            list: result.slice((current - 1) * pageSize, current * pageSize),
-            total: result.length,
-            current,
-            pageSize
-        }
+        await redis.set(`${ language || '/any' }-list`, JSON.stringify(result))
+        return result
     } catch (error) {
         throw JSON.stringify(error)
     }
 }
 
+// 获取当前时间 2022-03-12 23:38:23
+const getNow = () => {
+    const date = getDate()
+    let hour = new Date().getHours()
+    let minute = new Date().getMinutes()
+    let second = new Date().getSeconds()
+    hour = hour < 10 ? '0' + hour : hour
+    minute = minute < 10 ? '0' + minute : minute
+    second = second < 10 ? '0' + second : second
+  
+    return `${ date } ${ hour }:${ minute }:${ second }`
+}
+// 获取日期，num 为 0 时返回今天，为 -1 时返回昨天，为 1 时返回明天，如 20210520
+const getDate = (num = 0) => {
+    const time = new Date().getTime() + 24 * 60 * 60 * 1000 * num
+    const year = new Date(time).getFullYear()
+    const month = new Date(time).getMonth() + 1
+    const date = new Date(time).getDate()
+  
+    return `${ year }-${ month < 10 ? '0' + month : month }-${ date < 10 ? '0' + date : date }`
+}
+
 module.exports = {
     getGithubLanguageList,
     getGithubTrendingWithRetry,
+    getGithubTrending,
+    getNow,
 }

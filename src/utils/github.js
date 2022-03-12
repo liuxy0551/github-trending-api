@@ -111,9 +111,10 @@ const getGithubTrending = async (language, dateRange) => {
 }
 
 // 获取当前时间 2022-03-12 23:38:23
-const getNow = () => {
+// Serverless 运行时使用 UTC 时间，比北京时间减少了8小时
+const getNow = (hours = 8) => {
     const date = getDate()
-    let hour = new Date().getHours()
+    let hour = new Date().getHours() + hours
     let minute = new Date().getMinutes()
     let second = new Date().getSeconds()
     hour = hour < 10 ? '0' + hour : hour

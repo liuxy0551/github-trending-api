@@ -1,6 +1,6 @@
 {
   "name": "github-trending-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "提供 Github Trending 数据的 API 接口",
   "main": "app.js",
   "scripts": {

@@ -7,10 +7,9 @@
 
   redis: { // redis 配置
     username: '',
-    password: '',
-    // password: '1234',
+    password: '1234',
     host: '127.0.0.1',
     port: '6379',
-    dbNumber: '1',
+    dbNumber: '0',
   }
 }

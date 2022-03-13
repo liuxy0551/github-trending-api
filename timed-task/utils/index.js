@@ -25,7 +25,7 @@ const getNow = (hours = 8) => {
 }
 
 // 发送请求
-const apiFunc = (url, params, callback) => {
+const apiPostFunc = (url, params, callback) => {
   let msg
   axios.post(url, params).then(res => {
     msg = `success, ${ getNow() }, ${ url }, ${ JSON.stringify(res.data) }`
@@ -40,5 +40,5 @@ const apiFunc = (url, params, callback) => {
 
 module.exports = {
   getNow,
-  apiFunc
+  apiPostFunc
 }

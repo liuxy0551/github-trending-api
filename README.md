@@ -28,7 +28,8 @@
     ],
     "total": 25,
     "current": 1,
-    "pageSize": 5
+    "pageSize": 5,
+    "isCache": true
   },
   "message": "成功"
 }
@@ -47,4 +48,4 @@ yarn dev
 
 ## 缓存规则
 
-&emsp;&emsp;6点到23点每小时执行一次，如果执行失败，会重试，最多重试5次，每次成功都会把结果放到 Redis。
+&emsp;&emsp;每半小时拉取一次数据，如果拉取失败，会重试，最多重试5次，每次成功会把结果更新到 Redis。

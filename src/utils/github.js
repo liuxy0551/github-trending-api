@@ -44,7 +44,8 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
                 list: list.slice((current - 1) * pageSize, current * pageSize),
                 total: list.length,
                 current,
-                pageSize
+                pageSize,
+                isCache: !!value
             }
         } catch (error) {
             if (!JSON.stringify(error).includes('timeout')) throw error

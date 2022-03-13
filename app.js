@@ -5,16 +5,12 @@ const koaBody = require('koa-body')
 const { appPort } = require('./src/config/app.config')
 const middles = require('./src/middleWares')
 const router = require('./src/router')
-const { scheduleInit } = require('./src/schedule')
 const { redisInit } = require('./src/utils/redis')
 
 const app = new Koa()
 
 // 连接 redis
 redisInit()
-
-// 定时任务
-scheduleInit()
 
 app.use(logger())
 app.use(compress({

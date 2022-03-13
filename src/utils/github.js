@@ -26,18 +26,22 @@ const getGithubLanguageList = async () => {
     }
 }
 
-const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize) => {
+const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize, isCache) => {
     // 最多重试5次
     let retryCount = 0, maxCount = 5
 
-    const loop = async (language, dateRange, current, pageSize) => {
+    const loop = async (language, dateRange, current, pageSize, isCache) => {
         try {
             let list = []
-            // 从 Redis 中拿数据，没有就请求接口并重新赋值到 Redis
-            const value = await redis.get(`${ language }-list`)
-            if (value) {
-                list = JSON.parse(value)
-            } else {
+            if (isCache) {
+                // 从 Redis 中拿数据，没有就请求接口并重新赋值到 Redis
+                const value = await redis.get(`${ language }-list`)
+                if (value) {
+                    list = JSON.parse(value)
+                } else {
+                    list = await getGithubTrending(language, dateRange)
+                }
+            } else { // 不使用缓存则从 github 拿数据
                 list = await getGithubTrending(language, dateRange)
             }
             return {
@@ -45,21 +49,21 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
                 total: list.length,
                 current,
                 pageSize,
-                isCache: !!value
+                isCache
             }
         } catch (error) {
             if (!JSON.stringify(error).includes('timeout')) throw error
             if (retryCount < maxCount) {
                 retryCount++
                 console.log(`${ language || '/any' } 请求失败, 重试第 ${ retryCount } 次, ${ getNow() }`)
-                await loop(language, dateRange, current, pageSize)
+                await loop(language, dateRange, current, pageSize, isCache)
             } else {
                 throw error
             }
         }
     }
     
-    const result = await loop(language, dateRange, current, pageSize)
+    const result = await loop(language, dateRange, current, pageSize, isCache)
     return result
 }
 

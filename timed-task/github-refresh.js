@@ -1,4 +1,4 @@
-const http = require('http')
+const axios = require('axios')
 const { getNow } = require('./utils')
 
 exports.main_handler = async (event, context) => {
@@ -10,15 +10,12 @@ exports.main_handler = async (event, context) => {
     ]
 
     for (let params of paramsList) {
-        http.get(`http://github-trending-api.liuxianyu.cn/repository/list?language=${ params.language }`, (data) => {
-            let str = ''
-            data.on('data', (chunk) => {
-                str+=chunk;//监听数据响应，拼接数据片段
-            })
-            data.on('end', () => {
-                console.log(getNow(), str.toString())
-                return event
-            })
+        axios.get(`http://github-trending-api.liuxianyu.cn/repository/list?isCache=false&language=${ params.language }`).then((res) => {
+            const { code, data, message } = res.data
+            delete data.list
+            console.log(getNow(), params.language, JSON.stringify({ code, data, message }))
+        }).catch((error) => {
+            console.log(getNow(), params.language, error.toString())
         })
     }
 }

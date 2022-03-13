@@ -1,3 +1,4 @@
+const axios = require('axios')
 const { getGithubLanguageList, getGithubTrendingWithRetry, getNow } = require('./github')
 
 /**
@@ -8,9 +9,17 @@ const setCtxBody = (code = 200, data, message = '成功', extraParams) => {
 	return { code, data, message, ...extraParams }
 }
 
+/**
+ * Serverless 打印日志
+ */
+const showLog = async (text) => {
+	await axios.get(`http://github-trending-api.liuxianyu.cn/log/create?text=${ text }`, { timeout })
+}
+
 module.exports = {
 	setCtxBody,
 	getGithubLanguageList,
 	getGithubTrendingWithRetry,
 	getNow,
+	showLog
 }

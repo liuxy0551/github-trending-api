@@ -1,6 +1,7 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
 const { redis } = require('./redis')
+const { showLog } = require('./index')
 const timeout = 60_000
 
 /**
@@ -50,7 +51,7 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
             if (!JSON.stringify(error).includes('timeout')) throw error
             if (retryCount < maxCount) {
                 retryCount++
-                console.log(`${ language || 'any' } 失败, 重试第 ${ retryCount } 次, ${ getNow() }`)
+                showLog(`${ language || 'any' } 失败, 重试第 ${ retryCount } 次, ${ getNow() }`)
                 await loop(language, dateRange, current, pageSize)
             } else {
                 throw error

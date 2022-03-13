@@ -1,5 +1,5 @@
 const schedule = require("node-schedule");
-const { getGithubTrending } = require('../utils/github')
+const { getGithubTrending, getNow } = require('../utils/github')
 
 const paramsList = [
     { language: 'javascript' },
@@ -19,7 +19,7 @@ const scheduleInit = () => {
     
     schedule.scheduleJob('0 0 6-23 * * ?', () => {
         for (let params of paramsList) {
-            console.log(params.language)
+            console.log(`执行定时任务：${ params.language || 'any' }`, getNow())
             getGithubTrending(params.language, dateRangeList[0])
         }
     });

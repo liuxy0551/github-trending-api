@@ -10,11 +10,11 @@ const { redisInit } = require('./src/utils/redis')
 
 const app = new Koa()
 
-// 定时任务
-scheduleInit()
-
 // 连接 redis
 redisInit()
+
+// 定时任务
+scheduleInit()
 
 app.use(logger())
 app.use(compress({

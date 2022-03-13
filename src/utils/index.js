@@ -12,8 +12,9 @@ const setCtxBody = (code = 200, data, message = '成功', extraParams) => {
 /**
  * Serverless 打印日志
  */
-const showLog = async (text) => {
-	await axios.get(`http://github-trending-api.liuxianyu.cn/log/create?text=${ text }`, { timeout })
+const showLog = (text) => {
+	console.log(text)
+    axios.get(`http://github-trending-api.liuxianyu.cn/log/create?text=${ encodeURI(text) }`)
 }
 
 module.exports = {

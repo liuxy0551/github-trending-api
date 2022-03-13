@@ -8,8 +8,6 @@ const paramsList = [
     { language: 'java' },
     { language: '' },
 ]
-// 处理 dateRange
-const dateRangeList = ['daily', 'weekly', 'monthly']
 
 // 定时方法
 const scheduleInit = () => {
@@ -18,9 +16,9 @@ const scheduleInit = () => {
     // 0 0 */1 * * ? // 每小时执行一次
     // 0/10 * * * * ? // 10秒执行一次
     
-    schedule.scheduleJob('0 0 6-23 * * ?', () => {
+    schedule.scheduleJob('0 0/32 * * * ?', () => {
+        showLog(`执行定时任务, ${ getNow() }`)
         for (let params of paramsList) {
-            showLog(`执行定时任务：${ params.language || 'any' }, ${ getNow() }`)
             RepositoryController.list({ query: { language: params.language } })
         }
     });

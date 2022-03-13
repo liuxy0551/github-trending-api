@@ -1,7 +1,6 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
 const { redis } = require('./redis')
-const { showLog } = require('./index')
 const timeout = 60_000
 
 /**
@@ -51,7 +50,7 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
             if (!JSON.stringify(error).includes('timeout')) throw error
             if (retryCount < maxCount) {
                 retryCount++
-                showLog(`${ language || 'any' } 失败, 重试第 ${ retryCount } 次, ${ getNow() }`)
+                showLog(`${ language || '/any' } 请求失败, 重试第 ${ retryCount } 次, ${ getNow() }`)
                 await loop(language, dateRange, current, pageSize)
             } else {
                 throw error
@@ -104,6 +103,7 @@ const getGithubTrending = async (language, dateRange) => {
                 time
             })
         })
+        showLog(`${ language || '/any' } 请求成功, ${ getNow() }`)
         await redis.set(`${ language || '/any' }-list`, JSON.stringify(result))
         return result
     } catch (error) {
@@ -132,6 +132,14 @@ const getDate = (num = 0) => {
     const date = new Date(time).getDate()
   
     return `${ year }-${ month < 10 ? '0' + month : month }-${ date < 10 ? '0' + date : date }`
+}
+
+/**
+ * Serverless 打印日志
+ */
+const showLog = (text) => {
+	console.log(text)
+    axios.get(`http://github-trending-api.liuxianyu.cn/log/create?text=${ encodeURI(text) }`)
 }
 
 module.exports = {

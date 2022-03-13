@@ -1,7 +1,7 @@
 /**
  * 配置文件
  */
-module.exports = {
+ module.exports = {
   appPort: 9000, // 服务端口
   defaultPageSize: 5, // 仓库的默认 pageSize
 
@@ -9,7 +9,7 @@ module.exports = {
     username: '',
     password: '',
     // password: '1234',
-    // host: '127.0.0.1',
+    host: '127.0.0.1',
     port: '6379',
     dbNumber: '1',
   }

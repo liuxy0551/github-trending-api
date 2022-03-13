@@ -8,7 +8,11 @@ const config = {
 const redis = createClient(config)
 
 const redisInit = async () => {
-    await redis.connect()
+    try {
+        await redis.connect()
+    } catch (error) {
+        console.log('Redis connect error!', error)
+    }
     
     redis.on('connect', (err) => console.log('Redis connect success!', err));
     redis.on('ready', (err) => console.log('Redis client ready!', err));

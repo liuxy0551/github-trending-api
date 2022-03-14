@@ -10,12 +10,12 @@ exports.main_handler = async (event, context) => {
     ]
 
     for (let params of paramsList) {
-        axios.get(`http://github-trending-api.liuxianyu.cn/repository/list?isCache=false&language=${ params.language }`).then((res) => {
+        axios.get(`http://github-trending-api.liuxianyu.cn/repository/list?isCache=no&language=${ params.language }`).then((res) => {
             const { code, data, message } = res.data
             delete data.list
-            console.log(getNow(), params.language, JSON.stringify({ code, data, message }))
+            console.log('\n', getNow(), params.language || 'any', JSON.stringify({ code, data, message }))
         }).catch((error) => {
-            console.log(getNow(), params.language, error.toString())
+            console.log('\n', getNow(), params.language || 'any', error.toString())
         })
     }
 }

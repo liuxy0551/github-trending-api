@@ -33,16 +33,16 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
     const loop = async (language, dateRange, current, pageSize, isCache) => {
         try {
             let list = []
-            if (isCache) {
+            if (isCache === 'no') { // 不使用缓存则从 github 拿数据
+                list = await getGithubTrending(language, dateRange)
+            } else {
                 // 从 Redis 中拿数据，没有就请求接口并重新赋值到 Redis
-                const value = await redis.get(`${ language }-list`)
+                const value = await redis.get(`${ language || '/any' }-list`)
                 if (value) {
                     list = JSON.parse(value)
                 } else {
                     list = await getGithubTrending(language, dateRange)
                 }
-            } else { // 不使用缓存则从 github 拿数据
-                list = await getGithubTrending(language, dateRange)
             }
             return {
                 list: list.slice((current - 1) * pageSize, current * pageSize),
@@ -94,6 +94,7 @@ const getGithubTrending = async (language, dateRange) => {
             const time = getNow()
     
             result.push({
+                index,
                 username,
                 repositoryName,
                 description,
@@ -108,7 +109,7 @@ const getGithubTrending = async (language, dateRange) => {
                 time
             })
         })
-        console.log(`${ language || '/any' } 请求成功, ${ getNow() }`)
+        console.log(`${ language || '/any' } 请求 github 成功, ${ getNow() }`)
         await redis.set(`${ language || '/any' }-list`, JSON.stringify(result))
         return result
     } catch (error) {

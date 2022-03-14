@@ -6,7 +6,7 @@ class RepositoryController {
     // 列表
     async list (ctx) {
         try {
-            let { language = '', dateRange = 'daily', current = 1, pageSize = defaultPageSize, isCache = 'true' } = ctx.query
+            let { language = '', dateRange = 'daily', current = 1, pageSize = defaultPageSize, isCache = 'yes' } = ctx.query
             // 处理 language
             language = list.map(item => item.value).includes(language) ? `/${ language }` : ''
 
@@ -20,8 +20,6 @@ class RepositoryController {
 
             // 处理 pageSize
             pageSize = isNaN(Number(pageSize)) ? defaultPageSize : Number(pageSize)
-
-            isCache = isCache === 'true'
 
             ctx.body = await RepositoryService.list(language, dateRange, current, pageSize, isCache);
         } catch (error) {

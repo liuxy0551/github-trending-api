@@ -12,6 +12,7 @@
   "data": {
     "list": [
       {
+        "index": 0,
         "username": "imcuttle",
         "repositoryName": "mometa",
         "description": "🛠 [Beta] 面向研发的低代码元编程，代码可视编辑，辅助编码工具",
@@ -29,7 +30,7 @@
     "total": 25,
     "current": 1,
     "pageSize": 5,
-    "isCache": true
+    "isCache": "yes"
   },
   "message": "成功"
 }

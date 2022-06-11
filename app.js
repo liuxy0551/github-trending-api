@@ -35,6 +35,6 @@ app.on('error', (err) => {
   console.error('Server error: \n%s\n%s ', err.stack || '')
 })
 
-app.listen(appPort, () => {
+app.listen(process.env.PORT || appPort, () => {
   console.log(`app runs on port ${ appPort }`)
 })

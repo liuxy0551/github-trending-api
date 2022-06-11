@@ -1,0 +1,33 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  github-trending-api: # service name
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: Github Trending
+    github-trending-api: # function name
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: index.handler
+        Runtime: custom
+        CodeUri: ./
+        MemorySize: 128
+        InstanceConcurrency: 3
+        Timeout: 30
+
+      Events:
+        httpTrigger:
+          Type: HTTP
+          Properties:
+            AuthType: ANONYMOUS
+            Methods: ['GET', 'POST']
+  Domain:
+    Type: Aliyun::Serverless::CustomDomain
+    Properties:
+      DomainName: Auto
+      Protocol: HTTP
+      RouteConfig:
+        Routes:
+          "/*":
+            ServiceName: github-trending-api
+            FunctionName: github-trending-api

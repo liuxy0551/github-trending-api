@@ -1,2 +1,4 @@
 #!/bin/bash
 /var/lang/node12/bin/node app.js
+
+# 腾讯云 Serverless

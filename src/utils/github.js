@@ -1,7 +1,7 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
 const { redis } = require('./redis')
-const timeout = 60_000
+const timeout = 60000
 
 /**
  * github trending language list
@@ -62,7 +62,7 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
             }
         }
     }
-    
+
     const result = await loop(language, dateRange, current, pageSize, isCache)
     return result
 }
@@ -73,18 +73,18 @@ const getGithubTrendingWithRetry = async (language, dateRange, current, pageSize
 const getGithubTrending = async (language, dateRange) => {
     try {
         const { data } = await axios.get(`https://github.com/trending${ language }?since=${ dateRange }`, { timeout })
-    
+
         let result = []
         const $ = cheerio.load(data)
         const items = $('article')
-    
+
         items.each((index, item) => {
             const [username, repositoryName] = items.eq(index).find('h1.lh-condensed').text().replace(/\s*/g, '').split('/')
             const description = items.eq(index).find('p.pr-4').text().replace(/(^\s*)|(\s*$)/g, '')
             const url = `https://github.com/${ username }/${ repositoryName }`
-    
+
             const [language, todayStar] = items.eq(index).find('div.f6').find('span.d-inline-block').text().replace(/\s*/g, '').split('Builtby')
-    
+
             const list = items.eq(index).find('div.f6').find('a')
             let starCountStr = '', forkCountStr = ''
             list.each((idx, aEle) => {
@@ -92,7 +92,7 @@ const getGithubTrending = async (language, dateRange) => {
                 idx === 1 && (forkCountStr = $(aEle).text().replace(/\s*/g, ''))
             })
             const time = getNow()
-    
+
             result.push({
                 index,
                 username,
@@ -127,7 +127,7 @@ const getNow = (hours = 8) => {
     hour = hour < 10 ? '0' + hour : hour
     minute = minute < 10 ? '0' + minute : minute
     second = second < 10 ? '0' + second : second
-  
+
     return `${ date } ${ hour }:${ minute }:${ second }`
 }
 // 获取日期，num 为 0 时返回今天，为 -1 时返回昨天，为 1 时返回明天，如 20210520
@@ -136,7 +136,7 @@ const getDate = (num = 0) => {
     const year = new Date(time).getFullYear()
     const month = new Date(time).getMonth() + 1
     const date = new Date(time).getDate()
-  
+
     return `${ year }-${ month < 10 ? '0' + month : month }-${ date < 10 ? '0' + date : date }`
 }
 

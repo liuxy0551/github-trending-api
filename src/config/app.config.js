@@ -11,5 +11,8 @@
     host: '127.0.0.1',
     port: '6379',
     dbNumber: '0',
-  }
+  },
+
+  timeout: 60000,
+  serverHour: 8, // 控制是否需要添加时间差
 }

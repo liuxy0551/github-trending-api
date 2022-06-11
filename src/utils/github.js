@@ -1,7 +1,7 @@
 const cheerio = require('cheerio')
 const axios = require('axios')
 const { redis } = require('./redis')
-const timeout = 60000
+const { timeout, serverHour } = require('../config/app.config')
 
 /**
  * github trending language list
@@ -119,7 +119,7 @@ const getGithubTrending = async (language, dateRange) => {
 
 // 获取当前时间 2022-03-12 23:38:23
 // Serverless 运行时使用 UTC 时间，比北京时间减少了8小时
-const getNow = (hours = 8) => {
+const getNow = (hours = serverHour) => {
     const date = getDate()
     let hour = new Date().getHours() + hours
     let minute = new Date().getMinutes()

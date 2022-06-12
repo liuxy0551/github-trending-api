@@ -4,7 +4,11 @@
   <a href="https://github.com/liuxy0551/github-trending-api#github-trending-api" target="blank"><img src="./static/logo.jpg" width="500" alt="Github Trending" /></a>
 </p>
 
-提供 GitHub Trending 的 api 接口，<a href="https://www.apifox.cn/apidoc/shared-3245f62c-0da3-46a0-a877-a2477e9ef88b/api-10436551" target="_black">接口文档</a>，响应数据示例如下：
+提供 GitHub Trending 的 api 接口，在线体验：<a href="http://github-trending-api.liuxianyu.cn/repository/list" target="_black">http://github-trending-api.liuxianyu.cn/repository/list</a>
+
+欢迎 star <a href="https://github.com/liuxy0551/github-trending-api" target="_black">https://github.com/liuxy0551/github-trending-api</a>
+
+<a href="https://www.apifox.cn/apidoc/shared-3245f62c-0da3-46a0-a877-a2477e9ef88b/api-10436551" target="_black">接口文档地址</a>，响应数据示例如下：
 
 ``` json
 {
@@ -49,4 +53,4 @@ yarn dev
 
 ## 缓存规则
 
-&emsp;&emsp;每半小时拉取一次数据，如果拉取失败，会重试，最多重试5次，每次成功会把结果更新到 Redis。
+&emsp;&emsp;每小时拉取一次数据，如果拉取失败，会重试，最多重试5次，每次成功会把结果更新到 Redis。

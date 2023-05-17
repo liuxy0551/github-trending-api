@@ -79,7 +79,7 @@ const getGithubTrending = async (language, dateRange) => {
         const items = $('article')
 
         items.each((index, item) => {
-            const [username, repositoryName] = items.eq(index).find('h1.lh-condensed').text().replace(/\s*/g, '').split('/')
+            const [username, repositoryName] = items.eq(index).find('h2.lh-condensed').text().replace(/\s*/g, '').split('/')
             const description = items.eq(index).find('p.pr-4').text().replace(/(^\s*)|(\s*$)/g, '')
             const url = `https://github.com/${ username }/${ repositoryName }`
 

@@ -14,5 +14,5 @@
   },
 
   timeout: 60000,
-  serverHour: 8, // 控制是否需要添加时间差
+  serverHour: 0, // 控制是否需要添加时间差
 }
